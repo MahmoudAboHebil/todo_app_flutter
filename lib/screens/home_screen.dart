@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todo_app_flutter/config/config.dart';
 import 'package:todo_app_flutter/data/data.dart';
 import 'package:todo_app_flutter/utils/utils.dart';
 import 'package:todo_app_flutter/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
+  static HomeScreen builder(BuildContext buildContext, GoRouterState state) =>
+      const HomeScreen();
   const HomeScreen({super.key});
 
   @override
@@ -62,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                             title: 'title',
                             time: '23:30',
                             date: '1/1/2024',
-                            note: 'note',
+                            note: '',
                             category: TaskCategory.education,
                             isCompleted: false,
                           ),
@@ -88,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                             title: 'title',
                             time: '23:30',
                             date: '1/1/2024',
-                            note: 'note',
+                            note: '',
                             category: TaskCategory.education,
                             isCompleted: true,
                           ),
@@ -105,7 +109,9 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const Gap(20),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(RouteLocation.createTask);
+                        },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: DisplayWhiteText(

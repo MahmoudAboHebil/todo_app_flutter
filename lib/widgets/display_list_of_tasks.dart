@@ -3,6 +3,7 @@ import 'package:todo_app_flutter/utils/utils.dart';
 
 import '../data/models/models.dart';
 import 'common_container.dart';
+import 'task_details.dart';
 import 'task_tile.dart';
 
 class DisplayListOfTasks extends StatelessWidget {
@@ -40,7 +41,18 @@ class DisplayListOfTasks extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   final task = tasks[index];
-                  return TaskTile(task: task);
+                  return InkWell(
+                    onTap: () async {
+                      // show task details
+                      await showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return TaskDetails(task: task);
+                        },
+                      );
+                    },
+                    child: TaskTile(task: task),
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return const Divider(
