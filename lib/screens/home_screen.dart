@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:todo_app_flutter/data/data.dart';
 import 'package:todo_app_flutter/utils/utils.dart';
 import 'package:todo_app_flutter/widgets/widgets.dart';
 
@@ -42,35 +43,79 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: deviceSize.height * 0.2,
+            top: deviceSize.height * 0.18,
             right: 0,
             left: 0,
-            child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Container(
-                    width: deviceSize.width,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: colors.primaryContainer,
-                    ),
-                    child: ListView.separated(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return const Text('Goal title');
-                      },
-                      separatorBuilder: (context, index) {
-                        return const Divider();
-                      },
-                      itemCount: 10,
-                      padding: EdgeInsets.zero,
-                    ),
+            bottom: 0,
+            child: SafeArea(
+              child: StretchingOverscrollIndicator(
+                axisDirection: AxisDirection.down,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const DisplayListOfTasks(
+                        tasks: [
+                          Task(
+                            title: 'title',
+                            time: '23:30',
+                            date: '1/1/2024',
+                            note: 'note',
+                            category: TaskCategory.education,
+                            isCompleted: false,
+                          ),
+                          Task(
+                            title: 'title2',
+                            time: '10:30',
+                            date: '2/1/2024',
+                            note: 'note',
+                            category: TaskCategory.shopping,
+                            isCompleted: false,
+                          ),
+                        ],
+                      ),
+                      const Gap(20),
+                      Text(
+                        'Completed',
+                        style: textTheme.headlineMedium,
+                      ),
+                      const Gap(20),
+                      const DisplayListOfTasks(
+                        tasks: [
+                          Task(
+                            title: 'title',
+                            time: '23:30',
+                            date: '1/1/2024',
+                            note: 'note',
+                            category: TaskCategory.education,
+                            isCompleted: true,
+                          ),
+                          Task(
+                            title: 'title2',
+                            time: '10:30',
+                            date: '2/1/2024',
+                            note: 'note',
+                            category: TaskCategory.shopping,
+                            isCompleted: true,
+                          ),
+                        ],
+                        isCompleted: true,
+                      ),
+                      const Gap(20),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DisplayWhiteText(
+                            text: 'Add new Task',
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
