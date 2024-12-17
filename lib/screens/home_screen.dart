@@ -63,6 +63,7 @@ class HomeScreen extends StatelessWidget {
                       const DisplayListOfTasks(
                         tasks: [
                           Task(
+                            id: 1,
                             title: 'title',
                             time: '23:30',
                             date: '1/1/2024',
@@ -71,6 +72,7 @@ class HomeScreen extends StatelessWidget {
                             isCompleted: false,
                           ),
                           Task(
+                            id: 2,
                             title: 'title2',
                             time: '10:30',
                             date: '2/1/2024',
@@ -89,6 +91,7 @@ class HomeScreen extends StatelessWidget {
                       const DisplayListOfTasks(
                         tasks: [
                           Task(
+                            id: 3,
                             title: 'title',
                             time: '23:30',
                             date: '1/1/2024',
@@ -97,6 +100,7 @@ class HomeScreen extends StatelessWidget {
                             isCompleted: true,
                           ),
                           Task(
+                            id: 4,
                             title: 'title2',
                             time: '10:30',
                             date: '2/1/2024',

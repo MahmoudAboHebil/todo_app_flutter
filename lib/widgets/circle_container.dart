@@ -19,7 +19,7 @@ class CircleContainer extends StatelessWidget {
         color: backgroundColor,
         border: Border.all(color: borderColor, width: 2),
       ),
-      child: child,
+      child: Center(child: child),
     );
   }
 }
