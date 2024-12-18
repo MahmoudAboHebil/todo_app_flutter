@@ -19,6 +19,26 @@ class Task extends Equatable {
     required this.isCompleted,
   });
 
+  Task copyWith({
+    int? id,
+    String? title,
+    String? note,
+    TaskCategory? category,
+    String? time,
+    String? date,
+    bool? isCompleted,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      title: title ?? this.title,
+      time: time ?? this.time,
+      date: date ?? this.date,
+      note: note ?? this.note,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
+
   Map<String, dynamic> toJson(Task task) {
     return {
       TaskKeys.id: task.id,
@@ -27,7 +47,7 @@ class Task extends Equatable {
       TaskKeys.date: task.date,
       TaskKeys.time: task.time,
       TaskKeys.category: task.category.name,
-      TaskKeys.isCompleted: task.isCompleted,
+      TaskKeys.isCompleted: task.isCompleted ? 1 : 0,
     };
   }
 
@@ -39,7 +59,7 @@ class Task extends Equatable {
       time: json[TaskKeys.time],
       date: json[TaskKeys.date],
       note: json[TaskKeys.note],
-      isCompleted: json[TaskKeys.isCompleted],
+      isCompleted: json[TaskKeys.isCompleted] == 1 ? true : false,
     );
   }
 

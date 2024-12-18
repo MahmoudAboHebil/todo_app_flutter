@@ -35,7 +35,7 @@ class TaskDataSource {
      ${TaskKeys.date} TEXT,
      ${TaskKeys.time} TEXT,
      ${TaskKeys.category} TEXT,
-     ${TaskKeys.isCompleted} TEXT,
+     ${TaskKeys.isCompleted} INTEGER
     )
     ''');
   }
