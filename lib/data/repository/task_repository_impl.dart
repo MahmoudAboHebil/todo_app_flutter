@@ -11,7 +11,7 @@ class TaskRepositoryImpl extends TaskRepository {
     try {
       return await taskDataSource.addTask(task);
     } catch (e) {
-      throw (e.toString());
+      rethrow;
     }
   }
 
@@ -20,7 +20,7 @@ class TaskRepositoryImpl extends TaskRepository {
     try {
       return await taskDataSource.deleteTask(task);
     } catch (e) {
-      throw (e.toString());
+      rethrow;
     }
   }
 
@@ -29,7 +29,7 @@ class TaskRepositoryImpl extends TaskRepository {
     try {
       return await taskDataSource.getAllTasks();
     } catch (e) {
-      throw (e.toString());
+      rethrow;
     }
   }
 
@@ -38,7 +38,7 @@ class TaskRepositoryImpl extends TaskRepository {
     try {
       return await taskDataSource.updateTask(task);
     } catch (e) {
-      throw (e.toString());
+      rethrow;
     }
   }
 }

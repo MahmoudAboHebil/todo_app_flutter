@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app_flutter/providers/providers.dart';
 import 'package:todo_app_flutter/utils/utils.dart';
 
 import '../data/models/models.dart';
@@ -6,7 +8,7 @@ import 'common_container.dart';
 import 'task_details.dart';
 import 'task_tile.dart';
 
-class DisplayListOfTasks extends StatelessWidget {
+class DisplayListOfTasks extends ConsumerWidget {
   const DisplayListOfTasks({
     required this.tasks,
     this.isCompleted = false,
@@ -19,7 +21,7 @@ class DisplayListOfTasks extends StatelessWidget {
   final String showEmptyString;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // final colors = context.colorScheme;
     final deviceSize = context.deviceSize;
     final textTheme = context.textTheme;
@@ -51,7 +53,20 @@ class DisplayListOfTasks extends StatelessWidget {
                         },
                       );
                     },
-                    child: TaskTile(task: task),
+                    onLongPress: () async {
+                      await AppAlerts.deleteDialogTask(context, ref, task);
+                    },
+                    child: TaskTile(
+                      task: task,
+                      onCompleted: (value) async {
+                        final taskNotifier = ref.read(taskProvider.notifier);
+                        await taskNotifier
+                            .updateTask(task)
+                            .catchError((value, stack) {
+                          AppAlerts.displaySnackBar(value.toString(), context);
+                        });
+                      },
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) {

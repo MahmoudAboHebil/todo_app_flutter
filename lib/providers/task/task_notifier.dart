@@ -5,14 +5,16 @@ import 'task_state.dart';
 
 class TaskNotifier extends StateNotifier<TaskState> {
   final TaskRepositoryImpl _taskRepositoryImpl;
-  TaskNotifier(this._taskRepositoryImpl) : super(const TaskState.init());
+  TaskNotifier(this._taskRepositoryImpl) : super(const TaskState.init()) {
+    getAllTasks();
+  }
 
   Future<void> addTask(Task task) async {
     try {
       await _taskRepositoryImpl.addTask(task);
       await getAllTasks();
     } catch (e) {
-      print(e.toString());
+      rethrow;
     }
   }
 
@@ -21,7 +23,7 @@ class TaskNotifier extends StateNotifier<TaskState> {
       await _taskRepositoryImpl.deleteTask(task);
       await getAllTasks();
     } catch (e) {
-      print(e.toString());
+      rethrow;
     }
   }
 
@@ -31,7 +33,7 @@ class TaskNotifier extends StateNotifier<TaskState> {
       await _taskRepositoryImpl.updateTask(updatedTask);
       await getAllTasks();
     } catch (e) {
-      print(e.toString());
+      rethrow;
     }
   }
 
@@ -40,7 +42,7 @@ class TaskNotifier extends StateNotifier<TaskState> {
       final newTasks = await _taskRepositoryImpl.getAllTasks();
       state = state.copyWith(newTasks);
     } catch (e) {
-      print(e.toString());
+      rethrow;
     }
   }
 }

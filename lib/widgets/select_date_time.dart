@@ -24,7 +24,7 @@ class SelectDateTime extends ConsumerWidget {
             controller: TextEditingController(),
             readOnly: true,
             suffixIcon: IconButton(
-              onPressed: () async => await _selectDate(context, ref),
+              onPressed: () async => await Helper.selectDate(context, ref),
               icon: const FaIcon(FontAwesomeIcons.calendar),
             ),
           ),
@@ -37,36 +37,12 @@ class SelectDateTime extends ConsumerWidget {
             controller: TextEditingController(),
             readOnly: true,
             suffixIcon: IconButton(
-              onPressed: () async => await _selectTime(context, ref),
+              onPressed: () async => await Helper.selectTime(context, ref),
               icon: const FaIcon(FontAwesomeIcons.clock),
             ),
           ),
         ),
       ],
     );
-  }
-
-  Future<void> _selectTime(BuildContext context, WidgetRef ref) async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTime != null) {
-      ref.read(timeProvider.notifier).state = pickedTime;
-    }
-  }
-
-  Future<void> _selectDate(BuildContext context, WidgetRef ref) async {
-    final date = ref.read(dateProvider);
-
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: date,
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2090),
-    );
-    if (pickedDate != null) {
-      ref.read(dateProvider.notifier).state = pickedDate;
-    }
   }
 }

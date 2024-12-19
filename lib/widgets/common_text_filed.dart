@@ -34,6 +34,7 @@ class CommonTextFiled extends StatelessWidget {
               InputDecoration(hintText: hintTitle, suffixIcon: suffixIcon),
           maxLines: maxLines,
           readOnly: readOnly,
+          controller: controller,
           onChanged: (val) {},
           onTapOutside: (event) {
             FocusManager.instance.primaryFocus?.unfocus();

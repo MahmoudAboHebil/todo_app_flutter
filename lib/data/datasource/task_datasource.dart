@@ -23,13 +23,30 @@ class TaskDataSource {
     final databasesPath = await getDatabasesPath();
     final myPath = join(databasesPath, AppKeys.dbTask);
 
-    return await openDatabase(myPath, onCreate: _onCreate, version: 1);
+    return await openDatabase(myPath,
+        onCreate: _onCreate, version: 3, onUpgrade: _upGrade);
   }
 
-  _onCreate(Database db, int version) {
-    db.execute('''
+  void _upGrade(db, oldVersion, newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute('''
+    CREATE TABLE IF NOT EXISTS ${AppKeys.dbTaskTable} (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT,
+      note TEXT,
+      date TEXT,
+      time TEXT,
+      category TEXT,
+      isCompleted INTEGER
+    )
+    ''');
+    }
+  }
+
+  _onCreate(Database db, int version) async {
+    await db.execute('''
     CREATE TABLE ${AppKeys.dbTaskTable} (
-     ${TaskKeys.id}  INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT ,
+     ${TaskKeys.id}  INTEGER PRIMARY KEY  AUTOINCREMENT ,
      ${TaskKeys.title} TEXT,
      ${TaskKeys.note} TEXT,
      ${TaskKeys.date} TEXT,
@@ -41,51 +58,59 @@ class TaskDataSource {
   }
 
   Future<int> addTask(Task task) async {
-    final db = await database;
-    final response = db.transaction((tr) async {
-      return await db.insert(
+    try {
+      final db = await database;
+      final response = await db.insert(
         AppKeys.dbTaskTable,
         task.toJson(task),
+        conflictAlgorithm: ConflictAlgorithm.replace,
       );
-    });
-    return response;
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<int> deleteTask(Task task) async {
-    final db = await database;
-    final response = db.transaction((tr) async {
-      return await db.delete(
+    try {
+      final db = await database;
+      final response = await db.delete(
         AppKeys.dbTaskTable,
-        where: 'id : ?',
+        where: 'id = ?',
         whereArgs: [task.id],
       );
-    });
-    return response;
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<int> updateTask(Task task) async {
-    final db = await database;
-    final response = db.transaction((tr) async {
-      return await tr.update(
+    try {
+      final db = await database;
+      final response = db.update(
         AppKeys.dbTaskTable,
         task.toJson(task),
-        where: 'id : ?',
+        where: 'id = ?',
         whereArgs: [task.id],
       );
-    });
-    return response;
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<List<Task>> getAllTasks() async {
-    final db = await database;
-    List<Map<String, dynamic>> response = await db.transaction(
-      (tr) async {
-        return await tr.query(AppKeys.dbTaskTable, orderBy: 'id DESC');
-      },
-    );
+    try {
+      final db = await database;
+      List<Map<String, dynamic>> response =
+          await db.query(AppKeys.dbTaskTable, orderBy: "id DESC");
 
-    final tasks = response.map((item) => Task.fromJson(item)).toList();
+      final tasks = response.map((item) => Task.fromJson(item)).toList();
 
-    return tasks;
+      return tasks;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
